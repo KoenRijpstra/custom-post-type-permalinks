@@ -1,5 +1,5 @@
 {
-  "name": "orounit/custom-post-type-permalinks",
+  "name": "torounit/custom-post-type-permalinks",
   "keywords": ["wordpress", "plugin"],
   "type": "wordpress-plugin",
   "require": {
