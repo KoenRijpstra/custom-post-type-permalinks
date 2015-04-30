@@ -1,0 +1,9 @@
+{
+  "name": "orounit/custom-post-type-permalinks",
+  "keywords": ["wordpress", "plugin"],
+  "type": "wordpress-plugin",
+  "require": {
+    "php": ">=5.3.2",
+    "composer/installers": "v1.0.6"
+  }
+}
