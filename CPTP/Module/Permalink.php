@@ -176,23 +176,30 @@ class CPTP_Module_Permalink extends CPTP_Module {
 		foreach ( $taxonomies as $taxonomy => $objects ) {
 
 			if ( false !== strpos( $permalink, '%'.$taxonomy.'%' ) ) {
-				$terms = wp_get_post_terms( $post_id, $taxonomy, array( 'orderby' => 'term_id' ) );
 
-				if ( $terms and ! is_wp_error( $terms ) ) {
-					$parents = array_map( array( __CLASS__, 'get_term_parent' ), $terms ); //親の一覧
-					$newTerms = array();
-					foreach ( $terms as $key => $term ) {
-						if ( ! in_array( $term->term_id, $parents ) ) {
-							$newTerms[] = $term;
+				// Set permalink with custom field named '%taxonomy%_custom_permalink'
+				$taxonomy_custom_permalink = get_post_meta( $post_id, $taxonomy . '_custom_permalink', true );
+				if ( ! empty( $taxonomy_custom_permalink ) ) {
+					$term_slug = $taxonomy_custom_permalink;
+				} else {
+					$terms = wp_get_post_terms( $post_id, $taxonomy, array( 'orderby' => 'term_id' ) );
+
+					if ( $terms and ! is_wp_error( $terms ) ) {
+						$parents = array_map( array( __CLASS__, 'get_term_parent' ), $terms ); //親の一覧
+						$newTerms = array();
+						foreach ( $terms as $key => $term ) {
+							if ( ! in_array( $term->term_id, $parents ) ) {
+								$newTerms[] = $term;
+							}
 						}
-					}
 
-					//このブロックだけで良いはず。
-					$term_obj = reset( $newTerms ); //最初のOBjectのみを対象。
-					$term_slug = $term_obj->slug;
+						//このブロックだけで良いはず。
+						$term_obj = reset( $newTerms ); //最初のOBjectのみを対象。
+						$term_slug = $term_obj->slug;
 
-					if ( isset( $term_obj->parent ) and 0 != $term_obj->parent ) {
-						$term_slug = CPTP_Util::get_taxonomy_parents( $term_obj->parent,$taxonomy, false, '/', true ) . $term_slug;
+						if ( isset( $term_obj->parent ) and 0 != $term_obj->parent ) {
+							$term_slug = CPTP_Util::get_taxonomy_parents( $term_obj->parent,$taxonomy, false, '/', true ) . $term_slug;
+						}
 					}
 				}
 
