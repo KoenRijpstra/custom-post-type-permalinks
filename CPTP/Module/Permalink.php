@@ -200,12 +200,13 @@ class CPTP_Module_Permalink extends CPTP_Module {
 							$term_slug = CPTP_Util::get_taxonomy_parents( $term_obj->parent, $taxonomy, false, '/', true ) . $term_slug;
 						}
 					}
+				}	
 
-					if ( isset( $term_slug ) ) {
-						$search[]  = '%' . $taxonomy . '%';
-						$replace[] = $term_slug;
-					}
+				if ( isset( $term_slug ) ) {
+					$search[]  = '%' . $taxonomy . '%';
+					$replace[] = $term_slug;
 				}
+				
 			}
 		}
 
